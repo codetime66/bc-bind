@@ -1,6 +1,6 @@
 /*
 *
-*/
+ */
 package bc.bind.model;
 
 import bc.bind.model.api.IBlockBody;
@@ -15,7 +15,7 @@ import javax.json.JsonObjectBuilder;
 public class Operation implements IBlockBody {
 
     private JsonObjectBuilder jsonObj;
-    
+
     private String operationType;
     private String p1;
     private String p2;
@@ -25,48 +25,30 @@ public class Operation implements IBlockBody {
     private String price;
     private String financialValue;
     private String date;
-    
-    public Operation() {
-       jsonObj = null;
-       operationType=null;
-       p1=null;
-       p2=null;
-       financialInstrument=null;
-       settlementMode=null;
-       quantity=null;
-       price=null;
-       financialValue=null;
-       date=null;
+
+    public Operation(String operationType,
+            String p1,
+            String p2,
+            String financialInstrument,
+            String settlementMode,
+            String quantity,
+            String price,
+            String financialValue,
+            String date) {
+
+        jsonObj = null;
+
+        this.operationType = operationType;
+        this.p1 = p1;
+        this.p2 = p2;
+        this.financialInstrument = financialInstrument;
+        this.settlementMode = settlementMode;
+        this.quantity = quantity;
+        this.price = price;
+        this.financialValue = financialValue;
+        this.date = date;
     }
 
-    public void setOperationType(String operationType){
-       this.operationType=operationType;
-    }
-    public void setP1(String p1){
-       this.p1=p1;
-    }
-    public void setP2(String p2){
-       this.p2=p2;
-    }
-    public void setFinancialInstrument(String financialInstrument){
-       this.financialInstrument=financialInstrument;
-    }
-    public void setSettlementMode(String settlementMode){
-       this.settlementMode=settlementMode; 
-    }
-    public void setQuantity(String quantity){
-       this.quantity=quantity;
-    }
-    public void setPrice(String price){
-       this.price=price;
-    }
-    public void setFinancialValue(String financialValue){
-       this.financialValue=financialValue;
-    }
-    public void setDate(String date){
-       this.date=date; 
-    }
-    
     public JsonObjectBuilder create() throws Exception {
         jsonObj = Json.createObjectBuilder()
                 .add("operationType", operationType)
@@ -83,5 +65,5 @@ public class Operation implements IBlockBody {
 
     public JsonObject build() throws Exception {
         return jsonObj.build();
-    }    
+    }
 }

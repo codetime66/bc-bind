@@ -13,25 +13,21 @@ import javax.json.JsonObjectBuilder;
  *
  * @author codetime
  */
-public class Block {
+public class Transaction {
 
     private JsonObjectBuilder jsonObj;
 
     private String index;
     private String previousIndex;
     private String[] recipients;
-
-    public Block(String index,
-            String previousIndex,
-            String[] recipients) {
-
+    
+    public Transaction() {
         jsonObj = null;
-
-        this.index = index;
-        this.previousIndex = previousIndex;
-        this.recipients = recipients;
+        index=null;
+        previousIndex=null;
+        recipients=null;
     }
-
+    
     public JsonObjectBuilder create(IBlockBody blockBody) throws Exception {
 
         jsonObj = Json.createObjectBuilder()
