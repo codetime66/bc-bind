@@ -3,7 +3,7 @@
  */
 package bc.bind;
 
-import bc.bind.model.Block;
+import bc.bind.model.DataSet;
 import bc.bind.model.Derivative;
 import bc.bind.model.FinancialInstrument;
 import bc.bind.model.Operation;
@@ -12,7 +12,7 @@ import bc.bind.model.Operation;
  *
  * @author codetime
  */
-public class BcBind {
+public class EntryBind {
 
     /**
      * @param args the command line arguments
@@ -22,7 +22,7 @@ public class BcBind {
 
             BuildData bd = new BuildData();
 
-            Block block = new Block("002",
+            DataSet dataSet = new DataSet("002",
                     "001",
                     new String[]{"1", "2", "3"});
 
@@ -44,8 +44,8 @@ public class BcBind {
                     "100",
                     "1000");
 
-   //         block.create(derivative);
-            bd.toStream(block.build());
+            dataSet.create(derivative);
+            bd.toStream(dataSet.build());
 
             Operation op = new Operation("0001",
                     "10020.00-1",
@@ -57,8 +57,8 @@ public class BcBind {
                     "10000",
                     "2016-06-17");
 
-//            block.create(op);
-            bd.toStream(block.build());
+            dataSet.create(op);
+            bd.toStream(dataSet.build());
 
         } catch (Exception ex) {
             ex.printStackTrace();

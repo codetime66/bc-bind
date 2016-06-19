@@ -3,7 +3,7 @@
  */
 package bc.bind.model;
 
-import bc.bind.model.api.IBlockBody;
+import bc.bind.model.api.IDataSet;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
@@ -12,7 +12,7 @@ import javax.json.JsonObjectBuilder;
  *
  * @author codetime
  */
-public class Operation implements IBlockBody {
+public class Operation implements IDataSet {
 
     private JsonObjectBuilder jsonObj;
 
