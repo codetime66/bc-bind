@@ -5,7 +5,6 @@ package bc.bind.model;
 
 import bc.bind.model.api.IDataSet;
 import javax.json.Json;
-import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
 /**
@@ -66,9 +65,5 @@ public class Derivative implements IDataSet {
         jsonObj.add("detail", derivative);
 
         return jsonObj;
-    }
-
-    public JsonObject build() throws Exception {
-        return jsonObj.build();
     }
 }

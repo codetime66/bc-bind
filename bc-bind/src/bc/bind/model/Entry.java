@@ -5,14 +5,13 @@ package bc.bind.model;
 
 import bc.bind.model.api.IDataSet;
 import javax.json.Json;
-import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
 /**
  *
  * @author codetime
  */
-public class Entry {
+public class Entry implements IDataSet{
 
     private JsonObjectBuilder jsonObj;
 
@@ -50,10 +49,6 @@ public class Entry {
                 .add("recipient", recipient);
 
         return jsonObj;
-    }
-
-    public JsonObject build() throws Exception {
-        return jsonObj.build();
     }
     
     @Override

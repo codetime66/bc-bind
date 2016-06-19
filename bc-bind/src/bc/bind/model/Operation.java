@@ -5,7 +5,6 @@ package bc.bind.model;
 
 import bc.bind.model.api.IDataSet;
 import javax.json.Json;
-import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
 /**
@@ -61,9 +60,5 @@ public class Operation implements IDataSet {
                 .add("financialValue", financialValue)
                 .add("date", date);
         return jsonObj;
-    }
-
-    public JsonObject build() throws Exception {
-        return jsonObj.build();
     }
 }

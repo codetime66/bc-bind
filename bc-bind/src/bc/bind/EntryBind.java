@@ -20,9 +20,6 @@ public class EntryBind {
     public static void main(String[] args) {
         try {
 
-            BuildData bd = new BuildData();
-
-            
             //creating an asset DataSet
             FinancialInstrument financialInstrument = new FinancialInstrument("SWAP",
                     "10020.00-1",
@@ -42,15 +39,17 @@ public class EntryBind {
                     "100",
                     "1000");
 
+            //json model toStream
+            System.out.println("derivative.toStream: " + derivative.toStream(derivative.build(derivative.create())));
             
             //building a entry based on a asset DataSet
             System.out.println("Entry:");
-            Entry entryAsset = new Entry("10020.00-1",
+            Entry entryAsset = new Entry("10020.00-1-PubKey",
             "datasethash",
             "datasetsign",
             derivative,
-            "05000.00-5");
-            bd.toStream(entryAsset.create().build());
+            "05000.00-5-PubKey");
+            System.out.println("entryAsset.toStream: " + entryAsset.toStream(entryAsset.build(entryAsset.create())));            
             //---------------------------------------------
             
             //creating an operation DataSet
@@ -64,14 +63,17 @@ public class EntryBind {
                     "10000",
                     "2016-06-17");
 
+            //json model toStream
+            System.out.println("operation.toStream: " + operation.toStream(operation.build(operation.create())));            
+            
             //building a entry based on an operation DataSet
             System.out.println("Entry:");
-            Entry entryOperation = new Entry("10020.00-1",
+            Entry entryOperation = new Entry("10020.00-1-PubKey",
             "datasethash",
             "datasetsign",
             operation,
-            "05000.00-5");
-            bd.toStream(entryOperation.create().build());
+            "05000.00-5-PubKey");
+            System.out.println("entryOperation.toStream: " + entryOperation.toStream(entryOperation.build(entryOperation.create())));            
             //---------------------------------------------
             
         } catch (Exception ex) {
