@@ -4,6 +4,8 @@
 package bc.bind.model;
 
 import bc.bind.model.api.IDataSet;
+import bc.cipher.api.Cipher;
+import bc.cipher.api.CipherFactory;
 import javax.json.Json;
 import javax.json.JsonObjectBuilder;
 
@@ -11,7 +13,7 @@ import javax.json.JsonObjectBuilder;
  *
  * @author codetime
  */
-public class Entry implements IDataSet{
+public class Entry implements IDataSet {
 
     private JsonObjectBuilder jsonObj;
 
@@ -26,16 +28,14 @@ public class Entry implements IDataSet{
             String hash,
             String sign,
             IDataSet dataSet,
-            String recipient) {
+            String recipient) throws Exception {
         jsonObj = null;
         this.sender = sender;
         this.hash = hash;
         this.sign = sign;
         this.dataSet = dataSet;
         this.recipient = recipient;
-
-        //TODO: change to digest algorithm
-        index = "ENTRYINDEX"+hashCode();
+        index = getIndex();
     }
 
     public JsonObjectBuilder create() throws Exception {
@@ -50,15 +50,16 @@ public class Entry implements IDataSet{
 
         return jsonObj;
     }
-    
-    @Override
-    public int hashCode() {
-        int hashcode = 1;
-        hashcode = hashcode * 17 + (sender == null ? 0 : sender.hashCode());
-        hashcode = hashcode * 31 + (hash == null ? 0 : hash.hashCode());
-        hashcode = hashcode * 13 + (sign == null ? 0 : sign.hashCode());
-        hashcode = hashcode * 13 + (dataSet == null ? 0 : dataSet.hashCode());
-        hashcode = hashcode * 13 + (recipient == null ? 0 : recipient.hashCode());
-        return hashcode;
-    }    
+
+    private String getIndex() throws Exception {
+        Cipher cipher = (Cipher) CipherFactory.getInstance("MDGenerator");
+        StringBuilder sb = new StringBuilder();
+        sb.append(sender);
+        sb.append(hash);
+        sb.append(sign);
+        sb.append(dataSet);
+        sb.append(recipient);
+
+        return cipher.perform((sb.toString()).getBytes());
+    }
 }
