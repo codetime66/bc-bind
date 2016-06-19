@@ -3,8 +3,8 @@
  */
 package bc.bind;
 
-import bc.bind.model.DataSet;
 import bc.bind.model.Derivative;
+import bc.bind.model.Entry;
 import bc.bind.model.FinancialInstrument;
 import bc.bind.model.Operation;
 
@@ -22,11 +22,9 @@ public class EntryBind {
 
             BuildData bd = new BuildData();
 
-            DataSet dataSet = new DataSet("002",
-                    "001",
-                    new String[]{"1", "2", "3"});
-
-            FinancialInstrument fi = new FinancialInstrument("SWAP",
+            
+            //creating an asset DataSet
+            FinancialInstrument financialInstrument = new FinancialInstrument("SWAP",
                     "10020.00-1",
                     "16D00000001",
                     "1000",
@@ -34,7 +32,7 @@ public class EntryBind {
                     "10000",
                     "2016-06-17");
 
-            Derivative derivative = new Derivative(fi,
+            Derivative derivative = new Derivative(financialInstrument,
                     "10020.00-1",
                     "DI",
                     "100",
@@ -44,10 +42,19 @@ public class EntryBind {
                     "100",
                     "1000");
 
-            dataSet.create(derivative);
-            bd.toStream(dataSet.build());
-
-            Operation op = new Operation("0001",
+            
+            //building a entry based on a asset DataSet
+            System.out.println("Entry:");
+            Entry entryAsset = new Entry("10020.00-1",
+            "datasethash",
+            "datasetsign",
+            derivative,
+            "05000.00-5");
+            bd.toStream(entryAsset.create().build());
+            //---------------------------------------------
+            
+            //creating an operation DataSet
+            Operation operation = new Operation("0001",
                     "10020.00-1",
                     "05000.00-5",
                     "16D00000001",
@@ -57,9 +64,16 @@ public class EntryBind {
                     "10000",
                     "2016-06-17");
 
-            dataSet.create(op);
-            bd.toStream(dataSet.build());
-
+            //building a entry based on an operation DataSet
+            System.out.println("Entry:");
+            Entry entryOperation = new Entry("10020.00-1",
+            "datasethash",
+            "datasetsign",
+            operation,
+            "05000.00-5");
+            bd.toStream(entryOperation.create().build());
+            //---------------------------------------------
+            
         } catch (Exception ex) {
             ex.printStackTrace();
         }

@@ -3,7 +3,7 @@
  */
 package bc.bind.model;
 
-import bc.bind.model.api.IBlockBody;
+import bc.bind.model.api.IDataSet;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
@@ -20,33 +20,33 @@ public class Entry {
     private String sender;
     private String hash;
     private String sign;
-    private String encrypted;
+    private IDataSet dataSet;
     private String recipient;
 
     public Entry(String sender,
             String hash,
             String sign,
-            String encrypted,
+            IDataSet dataSet,
             String recipient) {
         jsonObj = null;
         this.sender = sender;
         this.hash = hash;
         this.sign = sign;
-        this.encrypted = encrypted;
+        this.dataSet = dataSet;
         this.recipient = recipient;
 
-        //TODO: get hashcode for sender, recipient and hash to build the entry index
-        index = null;
+        //TODO: change to digest algorithm
+        index = "ENTRYINDEX"+hashCode();
     }
 
-    public JsonObjectBuilder create(IBlockBody blockBody) throws Exception {
+    public JsonObjectBuilder create() throws Exception {
 
         jsonObj = Json.createObjectBuilder()
                 .add("index", index)
                 .add("sender", sender)
                 .add("hash", hash)
                 .add("sign", sign)
-                .add("encrypted", encrypted)
+                .add("dataSet", dataSet.create())
                 .add("recipient", recipient);
 
         return jsonObj;
@@ -55,4 +55,15 @@ public class Entry {
     public JsonObject build() throws Exception {
         return jsonObj.build();
     }
+    
+    @Override
+    public int hashCode() {
+        int hashcode = 1;
+        hashcode = hashcode * 17 + (sender == null ? 0 : sender.hashCode());
+        hashcode = hashcode * 31 + (hash == null ? 0 : hash.hashCode());
+        hashcode = hashcode * 13 + (sign == null ? 0 : sign.hashCode());
+        hashcode = hashcode * 13 + (dataSet == null ? 0 : dataSet.hashCode());
+        hashcode = hashcode * 13 + (recipient == null ? 0 : recipient.hashCode());
+        return hashcode;
+    }    
 }
