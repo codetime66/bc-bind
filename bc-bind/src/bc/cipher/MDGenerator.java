@@ -13,7 +13,7 @@ import java.security.NoSuchAlgorithmException;
  */
 public class MDGenerator implements Cipher {
 
-    public String perform(byte[] message) throws Exception {
+    public String perform(byte[] message, String fileName) throws Exception {
         return hash256(message);
     }
     

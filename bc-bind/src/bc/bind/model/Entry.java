@@ -60,6 +60,6 @@ public class Entry implements IDataSet {
         sb.append(dataSet);
         sb.append(recipient);
 
-        return cipher.perform((sb.toString()).getBytes());
+        return cipher.perform((sb.toString()).getBytes(), null);
     }
 }

@@ -12,7 +12,7 @@ public class Main {
 
         try {
             Cipher cipher = (Cipher) CipherFactory.getInstance(args[0]);
-            System.out.println(cipher.perform(args[1].getBytes()));
+            System.out.println(cipher.perform(args[1].getBytes(), args[2]));
         } catch (Exception e) {
             e.printStackTrace();
         }
