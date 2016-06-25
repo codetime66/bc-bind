@@ -9,7 +9,7 @@ import java.io.FileInputStream;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.Signature;
-import java.security.spec.X509EncodedKeySpec;
+import java.security.spec.PKCS8EncodedKeySpec;
 
 /**
  *
@@ -24,7 +24,7 @@ public class SignGen implements Cipher {
         keyfis.read(encKey);
         keyfis.close();
         //
-        X509EncodedKeySpec privKeySpec = new X509EncodedKeySpec(encKey);
+        PKCS8EncodedKeySpec privKeySpec = new PKCS8EncodedKeySpec(encKey);
         KeyFactory keyFactory = KeyFactory.getInstance("DSA", "SUN");
         PrivateKey privKey
                 = keyFactory.generatePrivate(privKeySpec);
