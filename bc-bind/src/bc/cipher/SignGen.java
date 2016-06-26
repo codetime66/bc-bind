@@ -17,6 +17,7 @@ import java.security.spec.PKCS8EncodedKeySpec;
  */
 public class SignGen implements Cipher {
 
+    @Override
     public String perform(byte[] message, String keyFileName) throws Exception {
         // 
         FileInputStream keyfis = new FileInputStream(keyFileName);
@@ -28,13 +29,10 @@ public class SignGen implements Cipher {
         KeyFactory keyFactory = KeyFactory.getInstance("DSA", "SUN");
         PrivateKey privKey
                 = keyFactory.generatePrivate(privKeySpec);
-        //generating a hash from the message
-        Cipher md = CipherFactory.getInstance("MDGenerator");
-        String messageMD = md.perform(message);
-        //signing the hash
+        //signing the message
         Signature dsa = Signature.getInstance("SHA1withDSA", "SUN");
         dsa.initSign(privKey);
-        dsa.update(messageMD.getBytes());
+        dsa.update(message);
         //
         byte[] realSig = dsa.sign();
         //

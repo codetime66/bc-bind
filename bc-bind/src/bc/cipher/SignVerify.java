@@ -17,6 +17,7 @@ import java.security.spec.X509EncodedKeySpec;
  */
 public class SignVerify implements Cipher {
 
+    @Override
     public String perform(byte[] message, byte[] hashFile, String keyFileName) throws Exception {
         // 
         FileInputStream keyfis = new FileInputStream(keyFileName);
@@ -29,25 +30,10 @@ public class SignVerify implements Cipher {
         PublicKey pubKey
                 = keyFactory.generatePublic(pubKeySpec);
         //
-        FileInputStream sigfis = new FileInputStream(new String(message));
-        byte[] sigToVerify = new byte[sigfis.available()];
-        sigfis.read(sigToVerify);
-        sigfis.close();
-        //
         Signature sig = Signature.getInstance("SHA1withDSA", "SUN");
         sig.initVerify(pubKey);
-        //
-        FileInputStream datafis = new FileInputStream(new String(hashFile));
-        BufferedInputStream bufin = new BufferedInputStream(datafis);
-        byte[] buffer = new byte[1024];
-        int len;
-        while (bufin.available() != 0) {
-            len = bufin.read(buffer);
-            sig.update(buffer, 0, len);
-        };
-        bufin.close();
-        //
-        boolean verifies = sig.verify(sigToVerify);
+        sig.update(hashFile);
+        boolean verifies = sig.verify(message);
         System.out.println("signature verifies: " + verifies);
 
         return null;
