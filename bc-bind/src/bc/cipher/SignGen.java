@@ -6,7 +6,6 @@ package bc.cipher;
 import bc.cipher.api.Cipher;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.security.GeneralSecurityException;
@@ -34,11 +33,7 @@ public class SignGen implements Cipher {
         dsa.update(message);
         //
         byte[] realSig = dsa.sign();
-        /* save the signature in a file */
-        FileOutputStream sigfos = new FileOutputStream("sig");
-        sigfos.write( Base64.getEncoder().encode(realSig) );
-        sigfos.close();
-        //
+
         return Base64.getEncoder().encodeToString(realSig);
     }
 
