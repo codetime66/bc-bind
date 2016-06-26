@@ -38,18 +38,18 @@ public class SignVerify implements Cipher {
         return "signature verifies: " + verifies;
     }
 
-    public static PublicKey loadPublicKey(String stored) throws GeneralSecurityException {
+    protected PublicKey loadPublicKey(String stored) throws GeneralSecurityException {
         byte[] data = base64Decode(stored);
         X509EncodedKeySpec spec = new X509EncodedKeySpec(data);
         KeyFactory fact = KeyFactory.getInstance("DSA","SUN");
         return fact.generatePublic(spec);
     }
     
-    private static byte[] base64Decode(String key64) {
+    protected byte[] base64Decode(String key64) {
         return Base64.getDecoder().decode(key64);
     }
     
-    public static String readKeyFile(String fileName) throws Exception {
+    protected String readKeyFile(String fileName) throws Exception {
         Reader in = new BufferedReader(
                 new InputStreamReader(new FileInputStream(fileName), "UTF8"));
         StringBuffer buf = new StringBuffer();

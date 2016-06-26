@@ -41,7 +41,7 @@ public class KeyPairGen implements Cipher {
         return null;
     }
 
-    public String savePrivateKey(PrivateKey priv) throws GeneralSecurityException {
+    protected String savePrivateKey(PrivateKey priv) throws GeneralSecurityException {
         KeyFactory fact = KeyFactory.getInstance("DSA","SUN");
         PKCS8EncodedKeySpec spec = fact.getKeySpec(priv,
                 PKCS8EncodedKeySpec.class);
@@ -52,18 +52,18 @@ public class KeyPairGen implements Cipher {
         return key64;
     }
 
-    public String savePublicKey(PublicKey publ) throws GeneralSecurityException {
+    protected String savePublicKey(PublicKey publ) throws GeneralSecurityException {
         KeyFactory fact = KeyFactory.getInstance("DSA","SUN");
         X509EncodedKeySpec spec = fact.getKeySpec(publ,
                 X509EncodedKeySpec.class);
         return base64Encode(spec.getEncoded());
     }
 
-    private String base64Encode(byte[] packed) {
+    protected String base64Encode(byte[] packed) {
         return Base64.getEncoder().encodeToString(packed);
     }
 
-    private static void writeKeyFile(String key, String fileName) throws Exception {
+    protected void writeKeyFile(String key, String fileName) throws Exception {
         FileOutputStream keyfos = new FileOutputStream(fileName);
         keyfos.write(key.getBytes());
         keyfos.close();

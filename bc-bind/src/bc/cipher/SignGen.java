@@ -37,7 +37,7 @@ public class SignGen implements Cipher {
         return Base64.getEncoder().encodeToString(realSig);
     }
 
-    public static String readKeyFile(String fileName) throws Exception {
+    protected String readKeyFile(String fileName) throws Exception {
         Reader in = new BufferedReader(
                 new InputStreamReader(new FileInputStream(fileName), "UTF8"));
         StringBuffer buf = new StringBuffer();
@@ -49,7 +49,7 @@ public class SignGen implements Cipher {
         return buf.toString();
     }
 
-    public static PrivateKey loadPrivateKey(String key64) throws GeneralSecurityException {
+    protected PrivateKey loadPrivateKey(String key64) throws GeneralSecurityException {
         byte[] clear = base64Decode(key64);
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(clear);
         KeyFactory fact = KeyFactory.getInstance("DSA", "SUN");
@@ -58,7 +58,7 @@ public class SignGen implements Cipher {
         return priv;
     }
 
-    private static byte[] base64Decode(String key64) {
+    protected byte[] base64Decode(String key64) {
         return Base64.getDecoder().decode(key64);
     }
     
