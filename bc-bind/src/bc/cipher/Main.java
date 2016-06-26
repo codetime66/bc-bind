@@ -35,8 +35,11 @@ public class Main {
                     //
                     Cipher cipherSign = (Cipher) CipherFactory.getInstance("SignGen");
                     String sigFile = cipherSign.perform(readKeyFile(args[1]).getBytes(), privFileName);
+                    System.out.println("signed file: "+sigFile);
                     //
                     byte[] sigToVerify = base64Decode(sigFile);
+                    //byte[] sigToVerify = base64Decode("MCwCFFhTO4diy6t/1eNMUPQf1bOrL+HiAhRL9nQWdrqTrkKUjmQwOb2Q0ai8zg==");
+                    //byte[] sigToVerify = base64Decode("MCwCFFhTO4diy6t/1eNMUPQf1bOrL+HiAhRL9nQWdrqTrkKUjmQwOb2Q0ai8zz==");
                     //                    
                     System.out.println(cipher.perform(sigToVerify, readKeyFile(args[2]).getBytes(), pubFileName));
                     break;
