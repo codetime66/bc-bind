@@ -15,6 +15,7 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.SecureRandom;
 import java.security.Signature;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
@@ -30,7 +31,7 @@ public class KeyPairTest {
     public static PrivateKey loadPrivateKey(String key64) throws GeneralSecurityException {
         byte[] clear = base64Decode(key64);
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(clear);
-        KeyFactory fact = KeyFactory.getInstance("DSA");
+        KeyFactory fact = KeyFactory.getInstance("DSA","SUN");
         PrivateKey priv = fact.generatePrivate(keySpec);
         Arrays.fill(clear, (byte) 0);
         return priv;
@@ -39,12 +40,12 @@ public class KeyPairTest {
     public static PublicKey loadPublicKey(String stored) throws GeneralSecurityException {
         byte[] data = base64Decode(stored);
         X509EncodedKeySpec spec = new X509EncodedKeySpec(data);
-        KeyFactory fact = KeyFactory.getInstance("DSA");
+        KeyFactory fact = KeyFactory.getInstance("DSA","SUN");
         return fact.generatePublic(spec);
     }
 
     public static String savePrivateKey(PrivateKey priv) throws GeneralSecurityException {
-        KeyFactory fact = KeyFactory.getInstance("DSA");
+        KeyFactory fact = KeyFactory.getInstance("DSA","SUN");
         PKCS8EncodedKeySpec spec = fact.getKeySpec(priv,
                 PKCS8EncodedKeySpec.class);
         byte[] packed = spec.getEncoded();
@@ -55,7 +56,7 @@ public class KeyPairTest {
     }
 
     public static String savePublicKey(PublicKey publ) throws GeneralSecurityException {
-        KeyFactory fact = KeyFactory.getInstance("DSA");
+        KeyFactory fact = KeyFactory.getInstance("DSA","SUN");
         X509EncodedKeySpec spec = fact.getKeySpec(publ,
                 X509EncodedKeySpec.class);
         return base64Encode(spec.getEncoded());
@@ -88,7 +89,11 @@ public class KeyPairTest {
     }
 
     public static void main(String[] args) throws Exception {
-        KeyPairGenerator gen = KeyPairGenerator.getInstance("DSA");
+        KeyPairGenerator gen = KeyPairGenerator.getInstance("DSA","SUN");
+        //
+        SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
+        gen.initialize(1024, random);
+        //        
         KeyPair pair = gen.generateKeyPair();
 
         String pubKey = savePublicKey(pair.getPublic());
