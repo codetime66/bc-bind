@@ -45,7 +45,7 @@ public class BcBind {
                     "1000");
 
    //         block.create(derivative);
-            bd.toStream(block.build());
+   //         bd.toStream(block.build());
 
             Operation op = new Operation("0001",
                     "10020.00-1",
@@ -58,7 +58,7 @@ public class BcBind {
                     "2016-06-17");
 
 //            block.create(op);
-            bd.toStream(block.build());
+//            bd.toStream(block.build());
 
         } catch (Exception ex) {
             ex.printStackTrace();

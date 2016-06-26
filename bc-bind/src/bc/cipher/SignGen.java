@@ -17,9 +17,9 @@ import java.security.spec.PKCS8EncodedKeySpec;
  */
 public class SignGen implements Cipher {
 
-    public String perform(byte[] message, String fileName) throws Exception {
+    public String perform(byte[] message, String keyFileName) throws Exception {
         // 
-        FileInputStream keyfis = new FileInputStream(fileName);
+        FileInputStream keyfis = new FileInputStream(keyFileName);
         byte[] encKey = new byte[keyfis.available()];
         keyfis.read(encKey);
         keyfis.close();
@@ -30,7 +30,7 @@ public class SignGen implements Cipher {
                 = keyFactory.generatePrivate(privKeySpec);
         //generating a hash from the message
         Cipher md = CipherFactory.getInstance("MDGenerator");
-        String messageMD = md.perform(message, null);
+        String messageMD = md.perform(message);
         //signing the hash
         Signature dsa = Signature.getInstance("SHA1withDSA", "SUN");
         dsa.initSign(privKey);
@@ -39,5 +39,15 @@ public class SignGen implements Cipher {
         byte[] realSig = dsa.sign();
         //
         return new String(realSig);
+    }
+
+    @Override
+    public String perform(byte[] message, byte[] hashFile, String keyFileName) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); 
+    }
+
+    @Override
+    public String perform(byte[] message) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
 }

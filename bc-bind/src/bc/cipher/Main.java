@@ -1,6 +1,6 @@
 /*
 
-*/
+ */
 package bc.cipher;
 
 import bc.cipher.api.Cipher;
@@ -12,7 +12,22 @@ public class Main {
 
         try {
             Cipher cipher = (Cipher) CipherFactory.getInstance(args[0]);
-            System.out.println(cipher.perform(args[1].getBytes(), args[2]));
+            int ac = args.length;
+            switch (ac) {
+                case 2:
+                    //java -cp /home/codetime/projects/bc-bind/target/bc-1.0-SNAPSHOT.jar:/home/codetime/glassfish4/glassfish/modules/javax.json.jar bc.cipher.Main KeyPairGen <PARTICIPANT_SHORT_NAME>
+                    //java -cp /home/codetime/projects/bc-bind/target/bc-1.0-SNAPSHOT.jar:/home/codetime/glassfish4/glassfish/modules/javax.json.jar bc.cipher.Main MDGenerator <ORIGINAL_MSG>                    
+                    System.out.println(cipher.perform(args[1].getBytes()));
+                    break;
+                case 3:
+                    //java -cp /home/codetime/projects/bc-bind/target/bc-1.0-SNAPSHOT.jar:/home/codetime/glassfish4/glassfish/modules/javax.json.jar bc.cipher.Main SignGen <ORIGINAL_MSG> <PRIVATE_KEY>
+                    System.out.println(cipher.perform(args[1].getBytes(), args[2]));
+                    break;
+                case 4:
+                    //java -cp /home/codetime/projects/bc-bind/target/bc-1.0-SNAPSHOT.jar:/home/codetime/glassfish4/glassfish/modules/javax.json.jar bc.cipher.Main SignVerify <SIGN_MSG> <HASH_MSG> <PUBLIC_KEY>                    
+                    System.out.println(cipher.perform(args[1].getBytes(), args[2].getBytes(), args[3]));
+                    break;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
