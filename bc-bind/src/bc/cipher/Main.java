@@ -3,7 +3,6 @@
  */
 package bc.cipher;
 
-import static bc.cipher.KeyPairTest.readKeyFile;
 import bc.cipher.api.Cipher;
 import bc.cipher.api.CipherFactory;
 import java.io.BufferedReader;
