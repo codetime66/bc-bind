@@ -129,14 +129,11 @@ public class KeyPairTest {
         //
         /* save the signature in a file */
         FileOutputStream sigfos = new FileOutputStream("sig");
-        sigfos.write(realSig);
+        sigfos.write( Base64.getEncoder().encode(realSig) );
         sigfos.close();
-
         //
-        FileInputStream sigfis = new FileInputStream("sig");
-        byte[] sigToVerify = new byte[sigfis.available()];
-        sigfis.read(sigToVerify);
-        sigfis.close();
+        String sigFile = readKeyFile("sig");
+        byte[] sigToVerify = base64Decode(sigFile);
         //
         Signature sig = Signature.getInstance("SHA1withDSA", "SUN");
         sig.initVerify(pubSavedFile);
