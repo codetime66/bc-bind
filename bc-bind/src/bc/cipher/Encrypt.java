@@ -60,10 +60,10 @@ public class Encrypt {
         cipher.init(Cipher.ENCRYPT_MODE, publicKey);
 
         String encryptedkey = base64Encode(cipher.doFinal(symmetricKey));
-
+        System.out.println("Encrypted Key : " + encryptedkey);
     }
 
-    public String encryptWithAESKey(byte[] data, byte[] key) throws NoSuchAlgorithmException, NoSuchPaddingException,
+    protected String encryptWithAESKey(byte[] data, byte[] key) throws NoSuchAlgorithmException, NoSuchPaddingException,
             InvalidKeyException, IllegalBlockSizeException, BadPaddingException, UnsupportedEncodingException {
         SecretKey secKey = new SecretKeySpec(key, "AES");
 
