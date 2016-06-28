@@ -27,7 +27,7 @@ import java.util.Base64;
  *
  * @author codetime
  */
-public class Encrypt {
+public class Encrypt implements bc.cipher.api.Cipher {
 
     public static void main(String[] args) throws Exception {
         Encrypt encrypt = new Encrypt();
@@ -36,7 +36,8 @@ public class Encrypt {
         encrypt.perform(message, keyFileName);
     }
 
-    public void perform(byte[] message, String keyFileName) throws Exception {
+    @Override
+    public String perform(byte[] message, String keyFileName) throws Exception {
 
         //Generate Symmetric key
         KeyGenerator generator = KeyGenerator.getInstance("AES");
@@ -61,6 +62,8 @@ public class Encrypt {
 
         String encryptedkey = base64Encode(cipher.doFinal(symmetricKey));
         System.out.println("Encrypted Key : " + encryptedkey);
+        
+        return null;
     }
 
     protected String encryptWithAESKey(byte[] data, byte[] key) throws NoSuchAlgorithmException, NoSuchPaddingException,
@@ -100,6 +103,16 @@ public class Encrypt {
         }
         in.close();
         return buf.toString();
+    }
+
+    @Override
+    public String perform(byte[] message) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String perform(byte[] message, byte[] hashFile, String keyFileName) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
