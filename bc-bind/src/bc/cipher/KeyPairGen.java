@@ -25,7 +25,7 @@ public class KeyPairGen implements Cipher {
 
     @Override
     public String perform(byte[] fileName) throws Exception {
-        KeyPairGenerator gen = KeyPairGenerator.getInstance("DSA","SUN");
+        KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA");
         SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
         gen.initialize(1024, random);
         KeyPair pair = gen.generateKeyPair();
@@ -42,7 +42,7 @@ public class KeyPairGen implements Cipher {
     }
 
     protected String savePrivateKey(PrivateKey priv) throws GeneralSecurityException {
-        KeyFactory fact = KeyFactory.getInstance("DSA","SUN");
+        KeyFactory fact = KeyFactory.getInstance("RSA");
         PKCS8EncodedKeySpec spec = fact.getKeySpec(priv,
                 PKCS8EncodedKeySpec.class);
         byte[] packed = spec.getEncoded();
@@ -53,7 +53,7 @@ public class KeyPairGen implements Cipher {
     }
 
     protected String savePublicKey(PublicKey publ) throws GeneralSecurityException {
-        KeyFactory fact = KeyFactory.getInstance("DSA","SUN");
+        KeyFactory fact = KeyFactory.getInstance("RSA");
         X509EncodedKeySpec spec = fact.getKeySpec(publ,
                 X509EncodedKeySpec.class);
         return base64Encode(spec.getEncoded());
