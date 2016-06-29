@@ -27,7 +27,7 @@ public class SignVerify implements Cipher {
         PublicKey pubSavedFile = loadPublicKey(pubK.toString());
         System.out.println(pubSavedFile);
         //
-        Signature sig = Signature.getInstance("SHA1withDSA", "SUN");
+        Signature sig = Signature.getInstance("SHA1withRSA");
         sig.initVerify(pubSavedFile);
         System.out.println("file to verify:"+new String(hashFile));
         sig.update(hashFile);        
@@ -41,7 +41,7 @@ public class SignVerify implements Cipher {
     protected PublicKey loadPublicKey(String stored) throws GeneralSecurityException {
         byte[] data = base64Decode(stored);
         X509EncodedKeySpec spec = new X509EncodedKeySpec(data);
-        KeyFactory fact = KeyFactory.getInstance("DSA","SUN");
+        KeyFactory fact = KeyFactory.getInstance("RSA");
         return fact.generatePublic(spec);
     }
     
@@ -60,15 +60,4 @@ public class SignVerify implements Cipher {
         in.close();
         return buf.toString();
     }
-    
-    @Override
-    public String perform(byte[] message, String fileName) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); 
-    }
-
-    @Override
-    public String perform(byte[] message) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); 
-    }
-
 }

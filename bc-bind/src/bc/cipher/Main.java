@@ -37,16 +37,6 @@ public class Main {
                     System.out.println(cipher.perform(readKeyFile(args[1]).getBytes(), args[2]));
                     break;
                     
-                //java -cp /home/codetime/projects/bc-bind/target/bc-1.0-SNAPSHOT.jar:/home/codetime/glassfish4/glassfish/modules/javax.json.jar bc.cipher.Main RSAEncryption <ORIGINAL_MSG> <PUBLIC_KEY>                    
-                case "RSAEncryption":
-                    System.out.println(cipher.perform(readKeyFile(args[1]).getBytes(), args[2]));
-                    break;
-                    
-                //java -cp /home/codetime/projects/bc-bind/target/bc-1.0-SNAPSHOT.jar:/home/codetime/glassfish4/glassfish/modules/javax.json.jar bc.cipher.Main RSADecryption <ENCRYPT_MSG> <PRIVATE_KEY>                                        
-                case "RSADecryption":
-                    System.out.println(cipher.perform(readKeyFile(args[1]).getBytes(), args[2]));
-                    break;
-                    
                 //java -cp /home/codetime/projects/bc-bind/target/bc-1.0-SNAPSHOT.jar:/home/codetime/glassfish4/glassfish/modules/javax.json.jar bc.cipher.Main SignVerify <SIGN_MSG> <ORIGINAL_MSG> <PARTICIPANT_SHORT_NAME>                    
                 case "SignVerify":
                     String privFileName = "PRIVKEY" + new String(args[3]);

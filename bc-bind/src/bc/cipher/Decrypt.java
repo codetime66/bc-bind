@@ -1,5 +1,6 @@
-/*
-
+/**
+ *  java -cp /home/codetime/projects/bc-bind/target/bc-1.0-SNAPSHOT.jar:/home/codetime/glassfish4/glassfish/modules/javax.json.jar bc.cipher.Decrypt <PRIVKEY> <encryptedData> <encryptedkey>
+ *
  */
 package bc.cipher;
 
@@ -31,19 +32,24 @@ import java.util.Base64;
 public class Decrypt implements bc.cipher.api.Cipher {
 
     public static void main(String[] args) throws Exception {
+
+        String encryptedData = "uRNxQ5somvLHrR5KGjK47XklfCKxdut0aPc8lgGwGNBpBct56XtIp35wXqu6YAdMstwNq1zxcefHCdSKFcFQaXs8zdVqhOptIgf7hvlDFYv3GQ8Whi3mtgEzPE3zVUTHJDj3b0C1PP2k7Pq71Ot5Jkzt5VBhcpPOzvvtnbYH1FpSL1ddz6YOr/5CKCM2K+gNFGuk37NTiA9yofL/gcazO70/j/DZ3n4/FJLbvnPFdJZWAz/KoVz0HldeCa98LUerWMVJCu815+MgQW34Ww4nTAP2Npiv0eRxpb+qLHwdaMsEMoQ29Jdodtbw18eRQSjHi8nJIcESvbTVmeeTWejNfA+r6MumzB/wr1h20x/SXxyyq2LgHuujKAaaXXSzoXW3tuGmKipxABshmuWWFS7b27CBo6FDr6JMlUvBgsi677c3Hyoz8rdc5H2K2C9yxuX1";
+        String encryptedkey = "cf4HOfTlWykmj58k+6SarbhxUI4m9lDURqukgkA5Ka17h24lO2ipK73d8KtAXVBcXSjSfiC4mm3Vds0w96PUS2h1OM73972SPlNu6oaJ+VxLmOpomE49W+OS2yt5E/1gfS4MKYxUnzoS2Xmn8DU/n+KtcZUK0V1kERWh8Zlj+34=";
+        
         Decrypt decrypt = new Decrypt();
-        byte[] message = decrypt.readKeyFile(args[0]).getBytes();
-        String keyFileName = args[1];
-        decrypt.perform(message, keyFileName);
+        String privKeyFileName = args[0];
+        decrypt.perform( new String[]{privKeyFileName, encryptedData, encryptedkey} );
     }
 
     @Override
-    public String perform(byte[] message, String keyFileName) throws Exception {
+    public String perform(String[] keys) throws Exception {
 
-        String encryptedData = "r6zoBtMgXXpPPhVVKTR6eu0hq434cNlrx+1Z7qn8xRSTcfZKPHjELO0z+uQoYf8X6h6VNWQKIxT8GxiYtIMFyyPnaULZpmZBM5BS4qCloHVy22TLnYFYP7ME/9Lff8NsnDC3hnvEovW/NHIjJOh8DCS9FL29Zn8qk4O4t+nZk25Qxpkg5skH6nwUI0UozKu7MAYydEyw8Zqk/x60qUUGmtlbg1tIAOTgeuVLnz+TKtl/GTiBVlGSKpc8/j/xXjqNoPiHGrYBrKgj4iSKAUFn+MRFhlbYx0Qacmxo7MHaqp5Abq80eCSitHrKPW9MgHGdvL4gxNXz0+zRy2pyagGJfmKIn6BPakhiOYe5U8pXmAa1mbLMccEXN23Dh5zx0SpZMJz0q4PbcppQs45cl+1/x+4Y+HNlyFuJgYuEdPDPT8H0gyqZQGS2mEeiz0akTc09";
-        String encryptedkey = "c5af+BztqaelqnK52+0szYq6qRsOhJjLC1ekFWcs9lGLWH8cUz+btRjtEoxe1+4w1RNsdX2GEJZ2ouqVE47QZd5uYgcg9Ed2ToMFmOWf+Fb1/g5eLB20403uWDxvgVPFCEsWx2oI4a1W2kbOr8tJqB4OD+Tam2KWRnDw4yLAdJI=";
+        String privKeyFileName = keys[0];        
+        
+        String encryptedData = keys[1];
+        String encryptedkey = keys[2];
 
-        String privK = readKeyFile(keyFileName);
+        String privK = readKeyFile(privKeyFileName);
         PrivateKey privateKey = loadPrivateKey(privK.toString());
         System.out.println(privateKey);
 
@@ -100,15 +106,4 @@ public class Decrypt implements bc.cipher.api.Cipher {
         return new String(newData);
 
     }
-
-    @Override
-    public String perform(byte[] message) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public String perform(byte[] message, byte[] hashFile, String keyFileName) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
 }

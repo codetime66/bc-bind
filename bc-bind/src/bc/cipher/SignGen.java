@@ -28,11 +28,11 @@ public class SignGen implements Cipher {
         PrivateKey privSavedFile = loadPrivateKey(privK.toString());
         System.out.println(privSavedFile);
         //
-        Signature dsa = Signature.getInstance("SHA1withDSA", "SUN");
-        dsa.initSign(privSavedFile);
-        dsa.update(message);
+        Signature rsa = Signature.getInstance("SHA1withRSA");
+        rsa.initSign(privSavedFile);
+        rsa.update(message);
         //
-        byte[] realSig = dsa.sign();
+        byte[] realSig = rsa.sign();
 
         return Base64.getEncoder().encodeToString(realSig);
     }
@@ -52,7 +52,7 @@ public class SignGen implements Cipher {
     protected PrivateKey loadPrivateKey(String key64) throws GeneralSecurityException {
         byte[] clear = base64Decode(key64);
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(clear);
-        KeyFactory fact = KeyFactory.getInstance("DSA", "SUN");
+        KeyFactory fact = KeyFactory.getInstance("RSA");
         PrivateKey priv = fact.generatePrivate(keySpec);
         Arrays.fill(clear, (byte) 0);
         return priv;
@@ -60,15 +60,5 @@ public class SignGen implements Cipher {
 
     protected byte[] base64Decode(String key64) {
         return Base64.getDecoder().decode(key64);
-    }
-    
-    @Override
-    public String perform(byte[] message, byte[] hashFile, String keyFileName) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public String perform(byte[] message) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

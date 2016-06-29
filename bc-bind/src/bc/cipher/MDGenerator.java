@@ -31,14 +31,4 @@ public class MDGenerator implements Cipher {
         }
         return result.toString();
     }
-
-    @Override
-    public String perform(byte[] message, byte[] hashFile, String keyFileName) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); 
-    }
-
-    @Override
-    public String perform(byte[] message, String fileName) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); 
-    }
 }

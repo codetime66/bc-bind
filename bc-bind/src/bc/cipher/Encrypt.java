@@ -1,5 +1,6 @@
-/*
-
+/**
+ * java -cp /home/codetime/projects/bc-bind/target/bc-1.0-SNAPSHOT.jar:/home/codetime/glassfish4/glassfish/modules/javax.json.jar bc.cipher.Encrypt derivative.txt PUBKEYCETIP
+ * 
  */
 package bc.cipher;
 
@@ -104,15 +105,4 @@ public class Encrypt implements bc.cipher.api.Cipher {
         in.close();
         return buf.toString();
     }
-
-    @Override
-    public String perform(byte[] message) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public String perform(byte[] message, byte[] hashFile, String keyFileName) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
 }
