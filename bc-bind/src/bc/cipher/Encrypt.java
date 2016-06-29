@@ -107,12 +107,12 @@ public class Encrypt implements bc.cipher.api.Cipher {
 
     @Override
     public String perform(byte[] message) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public String perform(byte[] message, byte[] hashFile, String keyFileName) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }

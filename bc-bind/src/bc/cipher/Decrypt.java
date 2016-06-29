@@ -52,7 +52,7 @@ public class Decrypt implements bc.cipher.api.Cipher {
         Cipher dipher = Cipher.getInstance("RSA");
 
         dipher.init(Cipher.DECRYPT_MODE, privateKey);
-        byte[] decryptedSymmetricKey = dipher.doFinal(Base64.getDecoder().decode(encryptedkey));
+        byte[] decryptedSymmetricKey = dipher.doFinal(base64Decode(encryptedkey));
 
         //Decrypt encrypted Data by decrypted symmetric key
         System.out.println("Decrypted Data : " + decryptWithAESKey(encryptedData, decryptedSymmetricKey));
@@ -85,6 +85,10 @@ public class Decrypt implements bc.cipher.api.Cipher {
         return Base64.getDecoder().decode(key64);
     }
 
+    protected byte[] base64Encode(byte[] key64) {
+        return Base64.getDecoder().decode(key64);
+    }
+    
     protected String decryptWithAESKey(String inputData, byte[] key) throws NoSuchAlgorithmException,
             NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
         Cipher cipher = Cipher.getInstance("AES");
@@ -92,19 +96,19 @@ public class Decrypt implements bc.cipher.api.Cipher {
 
         cipher.init(Cipher.DECRYPT_MODE, secKey);
 
-        byte[] newData = cipher.doFinal(Base64.getDecoder().decode(inputData.getBytes()));
+        byte[] newData = cipher.doFinal(base64Encode(inputData.getBytes()));
         return new String(newData);
 
     }
 
     @Override
     public String perform(byte[] message) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public String perform(byte[] message, byte[] hashFile, String keyFileName) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }
