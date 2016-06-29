@@ -33,8 +33,8 @@ public class Decrypt implements bc.cipher.api.Cipher {
 
     public static void main(String[] args) throws Exception {
 
-        String encryptedData = "uRNxQ5somvLHrR5KGjK47XklfCKxdut0aPc8lgGwGNBpBct56XtIp35wXqu6YAdMstwNq1zxcefHCdSKFcFQaXs8zdVqhOptIgf7hvlDFYv3GQ8Whi3mtgEzPE3zVUTHJDj3b0C1PP2k7Pq71Ot5Jkzt5VBhcpPOzvvtnbYH1FpSL1ddz6YOr/5CKCM2K+gNFGuk37NTiA9yofL/gcazO70/j/DZ3n4/FJLbvnPFdJZWAz/KoVz0HldeCa98LUerWMVJCu815+MgQW34Ww4nTAP2Npiv0eRxpb+qLHwdaMsEMoQ29Jdodtbw18eRQSjHi8nJIcESvbTVmeeTWejNfA+r6MumzB/wr1h20x/SXxyyq2LgHuujKAaaXXSzoXW3tuGmKipxABshmuWWFS7b27CBo6FDr6JMlUvBgsi677c3Hyoz8rdc5H2K2C9yxuX1";
-        String encryptedkey = "cf4HOfTlWykmj58k+6SarbhxUI4m9lDURqukgkA5Ka17h24lO2ipK73d8KtAXVBcXSjSfiC4mm3Vds0w96PUS2h1OM73972SPlNu6oaJ+VxLmOpomE49W+OS2yt5E/1gfS4MKYxUnzoS2Xmn8DU/n+KtcZUK0V1kERWh8Zlj+34=";
+        String encryptedData = "S1jTzNEHYxSe9IIYx01mc4F2zcaf/oMvheyviuHNNHjuw7TnAROw0+txWeSFAH524DqV7KyFvqCYDzx+3xb+cyAGsjiI6TD5ApvR16aaLLfBvgqwbPTBvJZei8zz+6KrlUM2ownpJ6KGwsZhLnNnPSDmP8W9MxwuFsOaYukPrJTmhPQQmLBQ/CBReuSM+7TrVG2bIB2qqFwIDk+odCfj7eMc6sOX4ASQN2gLYXm6koz/jKDGFTvOYh0uA3splSgw5BAH8cC60X2+jMsAdkuZyAkNwmldb6bwDRQ37lzLZhjP7+K30qmYHAgveRe5x8JXl+LmAFpZsn0LvHW4bk+CD5e5kKq6JII5Cs/nefapsANhSwWA35OgkdPAkUBx8Pu771oZkObBuyeL9SoNqYoR2uLGYNGVPBBOpQ2MGEW2vmmJ5llIz+B/gdGVYNvmEfh8";
+        String encryptedkey = "DFqkblyZWqCa73uZwlQWpV/YYweTbP0Mb+e/0MUDO7zsJDPrdzlPF8auJODc/07XxqnuR/yUL/mkIMU+jtmISyVipzd6ZW4TBScellqw5E7PIXtMzBdEDC/2P5Ubs0GEWttdsBpK68yigvLdNOsBCwwuw2e+EEjDUU2p0vYTrKg=";
         
         Decrypt decrypt = new Decrypt();
         String privKeyFileName = args[0];

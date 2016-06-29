@@ -1,4 +1,5 @@
 /*
+ * java -cp /home/codetime/projects/bc-bind/target/bc-1.0-SNAPSHOT.jar:/home/codetime/glassfish4/glassfish/modules/javax.json.jar bc.cipher.SignGen <ORIGINAL_MSG> <PRIVATE_KEY>
  *
  */
 package bc.cipher;
@@ -22,8 +23,15 @@ import java.util.Base64;
  */
 public class SignGen implements Cipher {
 
+    public static void main(String[] args) throws Exception {
+        SignGen signGen = new SignGen();
+        System.out.println( signGen.perform( new String[]{args[0],args[1]}) );
+    }
+    
     @Override
-    public String perform(byte[] message, String keyFileName) throws Exception {
+    public String perform(String[] args) throws Exception {
+        byte[] message = args[0].getBytes();
+        String keyFileName = args[1];
         String privK = readKeyFile(keyFileName);
         PrivateKey privSavedFile = loadPrivateKey(privK.toString());
         System.out.println(privSavedFile);

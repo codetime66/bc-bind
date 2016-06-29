@@ -1,5 +1,6 @@
 /*
-
+ * java -cp /home/codetime/projects/bc-bind/target/bc-1.0-SNAPSHOT.jar:/home/codetime/glassfish4/glassfish/modules/javax.json.jar bc.cipher.MDGenerator <ORIGINAL_MSG>
+ *
  */
 package bc.cipher;
 
@@ -13,8 +14,14 @@ import java.security.NoSuchAlgorithmException;
  */
 public class MDGenerator implements Cipher {
 
+    public static void main(String[] args) throws Exception {
+        MDGenerator md = new MDGenerator();
+        System.out.println( md.perform(new String[]{args[0]}) );
+    }
+    
     @Override
-    public String perform(byte[] message) throws Exception {
+    public String perform(String[] args) throws Exception {
+        byte[] message = args[0].getBytes();
         return hash256(message);
     }
     

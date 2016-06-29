@@ -1,5 +1,6 @@
 /*
-
+ * java -cp /home/codetime/projects/bc-bind/target/bc-1.0-SNAPSHOT.jar:/home/codetime/glassfish4/glassfish/modules/javax.json.jar bc.cipher.KeyPairGen <PARTICIPANT_SHORT_NAME>
+ *
  */
 package bc.cipher;
 
@@ -23,19 +24,25 @@ import java.util.Base64;
  */
 public class KeyPairGen implements Cipher {
 
+    public static void main(String[] args) throws Exception {
+       KeyPairGen keyPairGen = new KeyPairGen();
+       System.out.println( keyPairGen.perform(new String[]{args[0]}) );
+    }
+    
     @Override
-    public String perform(byte[] fileName) throws Exception {
+    public String perform(String[] args) throws Exception {
+        String fileName = args[0]; 
         KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA");
         SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
         gen.initialize(1024, random);
         KeyPair pair = gen.generateKeyPair();
 
         String pubKey = savePublicKey(pair.getPublic());
-        String pubKeyFileName="PUBKEY"+new String(fileName);
+        String pubKeyFileName="PUBKEY"+new String(fileName.getBytes());
         writeKeyFile(pubKey, pubKeyFileName);
 
         String privKey = savePrivateKey(pair.getPrivate());
-        String privKeyFileName="PRIVKEY"+new String(fileName);        
+        String privKeyFileName="PRIVKEY"+new String(fileName.getBytes());        
         writeKeyFile(privKey, privKeyFileName);
 
         return null;
