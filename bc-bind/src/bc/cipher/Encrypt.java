@@ -32,14 +32,15 @@ public class Encrypt implements bc.cipher.api.Cipher {
 
     public static void main(String[] args) throws Exception {
         Encrypt encrypt = new Encrypt();
-        byte[] message = encrypt.readKeyFile(args[0]).getBytes();
+        String message = encrypt.readKeyFile(args[0]);
         String keyFileName = args[1];
-        encrypt.perform(message, keyFileName);
+        encrypt.perform(new String[]{message, keyFileName});
     }
 
     @Override
-    public String perform(byte[] message, String keyFileName) throws Exception {
-
+    public String perform(String[] args) throws Exception {
+        byte[] message = args[0].getBytes();
+        String keyFileName = args[1];
         //Generate Symmetric key
         KeyGenerator generator = KeyGenerator.getInstance("AES");
         generator.init(128);
