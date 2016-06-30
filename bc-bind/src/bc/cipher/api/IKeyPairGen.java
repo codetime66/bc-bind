@@ -10,5 +10,5 @@ package bc.cipher.api;
  * @author codetime
  */
 public interface IKeyPairGen {
-   public String perform(String fileName) throws Exception;    
+   public String[] perform(String fileName) throws Exception;    
 }
