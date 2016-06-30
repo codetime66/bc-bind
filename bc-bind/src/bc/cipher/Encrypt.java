@@ -4,6 +4,7 @@
  */
 package bc.cipher;
 
+import bc.cipher.api.IEncrypt;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
@@ -28,19 +29,18 @@ import java.util.Base64;
  *
  * @author codetime
  */
-public class Encrypt implements bc.cipher.api.Cipher {
+public class Encrypt implements IEncrypt {
 
     public static void main(String[] args) throws Exception {
         Encrypt encrypt = new Encrypt();
         String message = encrypt.readKeyFile(args[0]);
         String keyFileName = args[1];
-        encrypt.perform(new String[]{message, keyFileName});
+        encrypt.perform(message, keyFileName);
     }
 
     @Override
-    public String perform(String[] args) throws Exception {
-        byte[] message = args[0].getBytes();
-        String keyFileName = args[1];
+    public String perform(String s_message, String keyFileName) throws Exception {
+        byte[] message = s_message.getBytes();
         //Generate Symmetric key
         KeyGenerator generator = KeyGenerator.getInstance("AES");
         generator.init(128);

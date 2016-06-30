@@ -4,7 +4,7 @@
  */
 package bc.cipher;
 
-import bc.cipher.api.Cipher;
+import bc.cipher.api.IMDGenerator;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -12,16 +12,16 @@ import java.security.NoSuchAlgorithmException;
  *
  * @author codetime
  */
-public class MDGenerator implements Cipher {
+public class MDGenerator implements IMDGenerator {
 
     public static void main(String[] args) throws Exception {
         MDGenerator md = new MDGenerator();
-        System.out.println( md.perform(new String[]{args[0]}) );
+        System.out.println( md.perform(args[0]) );
     }
     
     @Override
-    public String perform(String[] args) throws Exception {
-        byte[] message = args[0].getBytes();
+    public String perform(String s_message) throws Exception {
+        byte[] message = s_message.getBytes();
         return hash256(message);
     }
     

@@ -4,6 +4,7 @@
  */
 package bc.cipher;
 
+import bc.cipher.api.IDecrypt;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
@@ -29,25 +30,20 @@ import java.util.Base64;
  *
  * @author codetime
  */
-public class Decrypt implements bc.cipher.api.Cipher {
+public class Decrypt implements IDecrypt {
 
     public static void main(String[] args) throws Exception {
-
-        String encryptedData = "S1jTzNEHYxSe9IIYx01mc4F2zcaf/oMvheyviuHNNHjuw7TnAROw0+txWeSFAH524DqV7KyFvqCYDzx+3xb+cyAGsjiI6TD5ApvR16aaLLfBvgqwbPTBvJZei8zz+6KrlUM2ownpJ6KGwsZhLnNnPSDmP8W9MxwuFsOaYukPrJTmhPQQmLBQ/CBReuSM+7TrVG2bIB2qqFwIDk+odCfj7eMc6sOX4ASQN2gLYXm6koz/jKDGFTvOYh0uA3splSgw5BAH8cC60X2+jMsAdkuZyAkNwmldb6bwDRQ37lzLZhjP7+K30qmYHAgveRe5x8JXl+LmAFpZsn0LvHW4bk+CD5e5kKq6JII5Cs/nefapsANhSwWA35OgkdPAkUBx8Pu771oZkObBuyeL9SoNqYoR2uLGYNGVPBBOpQ2MGEW2vmmJ5llIz+B/gdGVYNvmEfh8";
-        String encryptedkey = "DFqkblyZWqCa73uZwlQWpV/YYweTbP0Mb+e/0MUDO7zsJDPrdzlPF8auJODc/07XxqnuR/yUL/mkIMU+jtmISyVipzd6ZW4TBScellqw5E7PIXtMzBdEDC/2P5Ubs0GEWttdsBpK68yigvLdNOsBCwwuw2e+EEjDUU2p0vYTrKg=";
+        
+        String encryptedData = "c2ApEqvITmTVeeDdxGmjXIuK7wDFpeibQhNVinnyPVJ1IfWhxu5YYvGsrGdyjn3kd3G21HOwce0ozSvkBfH3mqobinqJSIyz2SzSF5YBzbwS4rO8fy2KIYcxeXoGRXSObFcDhRtzhIuKjcZc5a96ZLMEH9W7FvBg0s6YAlGRlZPTXvIkunb+66cwzqYWelYdHmnr1urA+64uReesHqiJvrhZmzB6/B1kAbshQVYtj3M1jbPIojPmamMGvseFdnCP5e9eO32GOQ+yX9JBAxmGAA3KX7YGcCx/IAphf3FcM/4Z1fV3vq0Ij5+KEtNuPwb5WzvQwMty+nLc4o8eCi5GNAcwGEYY81I4tI4I6I1Tk7TeSgrKOaP2QrBlQ81eDXytnguUOZ1AxwSUbGUtaPjrCG2+m+j4NOaUJdA2lUIUhA7OADYaN0jCoQFneg9wEkKx";
+        String encryptedkey = "WXprFHCHCpqXJfCOr2aLsosqlhRjYClzNHmUdsrKgNPqNGitKF4JCvxfwyhRXRwupjAdwj+35EOy6BSu1yx1TW0DDfAxhjZF0e6cqMuFJ+ysV6DSFR6xDDLBi/ziHF/2spkRWDhQQdl6pawURfU7ZYnO0F8wAUDflBxpSdfP62o=";
         
         Decrypt decrypt = new Decrypt();
         String privKeyFileName = args[0];
-        decrypt.perform( new String[]{privKeyFileName, encryptedData, encryptedkey} );
+        decrypt.perform(privKeyFileName, encryptedData, encryptedkey);
     }
 
     @Override
-    public String perform(String[] keys) throws Exception {
-
-        String privKeyFileName = keys[0];        
-        
-        String encryptedData = keys[1];
-        String encryptedkey = keys[2];
+    public String perform(String privKeyFileName, String encryptedData, String encryptedkey) throws Exception {
 
         String privK = readKeyFile(privKeyFileName);
         PrivateKey privateKey = loadPrivateKey(privK.toString());

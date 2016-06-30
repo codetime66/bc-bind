@@ -4,8 +4,9 @@
  */
 package bc.cipher;
 
-import bc.cipher.api.Cipher;
 import bc.cipher.api.CipherFactory;
+import bc.cipher.api.ISignGen;
+import bc.cipher.api.ISignVerify;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
@@ -21,7 +22,7 @@ import java.util.Base64;
  *
  * @author codetime
  */
-public class SignVerify implements Cipher {
+public class SignVerify implements ISignVerify {
 
     public static void main(String[] args) throws Exception {
 
@@ -31,28 +32,28 @@ public class SignVerify implements Cipher {
         String pubFileName = "PUBKEY" + new String(args[2]);
         String original = signVerify.readKeyFile(args[1]);
         //
-        Cipher cipherSign = (Cipher) CipherFactory.getInstance("SignGen");
-        String sigFile = cipherSign.perform(new String[]{original, privFileName});
+        ISignGen signGen = (ISignGen) CipherFactory.getInstance("SignGen");
+        String sigFile = signGen.perform(original, privFileName);
         System.out.println("signed file: " + sigFile);
         //
-        System.out.println(signVerify.perform(new String[]{sigFile, original, pubFileName}));
+        System.out.println(signVerify.perform(sigFile, original, pubFileName));
     }
 
     @Override
-    public String perform(String[] args) throws Exception {
-        byte[] message = base64Decode(args[0]);
-        byte[] hashFile = args[1].getBytes();
-        String keyFileName = args[2];
+    public String perform(String sigFile, String original, String pubFileName) throws Exception {
+        byte[] b_sigFile = base64Decode(sigFile);
+        byte[] b_original = original.getBytes();
+        String keyFileName = pubFileName;
         String pubK = readKeyFile(keyFileName);
         PublicKey pubSavedFile = loadPublicKey(pubK.toString());
         System.out.println(pubSavedFile);
         //
         Signature sig = Signature.getInstance("SHA1withRSA");
         sig.initVerify(pubSavedFile);
-        System.out.println("file to verify:" + new String(hashFile));
-        sig.update(hashFile);
+        System.out.println("file to verify:" + new String(b_original));
+        sig.update(b_original);
         //        
-        boolean verifies = sig.verify(message);
+        boolean verifies = sig.verify(b_sigFile);
         System.out.println("signature verifies: " + verifies);
 
         return "signature verifies: " + verifies;

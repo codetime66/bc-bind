@@ -4,8 +4,8 @@
 package bc.bind.model;
 
 import bc.bind.model.api.IDataSet;
-import bc.cipher.api.Cipher;
 import bc.cipher.api.CipherFactory;
+import bc.cipher.api.IMDGenerator;
 import javax.json.Json;
 import javax.json.JsonObjectBuilder;
 
@@ -52,14 +52,13 @@ public class Entry implements IDataSet {
     }
 
     private String getIndex() throws Exception {
-        Cipher cipher = (Cipher) CipherFactory.getInstance("MDGenerator");
+        IMDGenerator MDG = (IMDGenerator) CipherFactory.getInstance("MDGenerator");
         StringBuilder sb = new StringBuilder();
         sb.append(sender);
         sb.append(hash);
         sb.append(sign);
         sb.append(dataSet);
         sb.append(recipient);
-
-        return cipher.perform( new String[]{sb.toString()} );
+        return MDG.perform(sb.toString());
     }
 }

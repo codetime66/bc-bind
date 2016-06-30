@@ -4,7 +4,7 @@
  */
 package bc.cipher;
 
-import bc.cipher.api.Cipher;
+import bc.cipher.api.ISignGen;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
@@ -21,17 +21,16 @@ import java.util.Base64;
  *
  * @author codetime
  */
-public class SignGen implements Cipher {
+public class SignGen implements ISignGen {
 
     public static void main(String[] args) throws Exception {
         SignGen signGen = new SignGen();
-        System.out.println( signGen.perform( new String[]{args[0],args[1]}) );
+        System.out.println( signGen.perform(args[0],args[1]) );
     }
     
     @Override
-    public String perform(String[] args) throws Exception {
-        byte[] message = args[0].getBytes();
-        String keyFileName = args[1];
+    public String perform(String s_message, String keyFileName) throws Exception {
+        byte[] message = s_message.getBytes();
         String privK = readKeyFile(keyFileName);
         PrivateKey privSavedFile = loadPrivateKey(privK.toString());
         System.out.println(privSavedFile);

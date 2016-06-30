@@ -4,7 +4,7 @@
  */
 package bc.cipher;
 
-import bc.cipher.api.Cipher;
+import bc.cipher.api.IKeyPairGen;
 import java.io.FileOutputStream;
 import java.security.GeneralSecurityException;
 import java.security.KeyFactory;
@@ -22,16 +22,15 @@ import java.util.Base64;
  *
  * @author codetime
  */
-public class KeyPairGen implements Cipher {
+public class KeyPairGen implements IKeyPairGen {
 
     public static void main(String[] args) throws Exception {
        KeyPairGen keyPairGen = new KeyPairGen();
-       System.out.println( keyPairGen.perform(new String[]{args[0]}) );
+       System.out.println( keyPairGen.perform(args[0]));
     }
     
     @Override
-    public String perform(String[] args) throws Exception {
-        String fileName = args[0]; 
+    public String perform(String fileName) throws Exception {
         KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA");
         SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
         gen.initialize(1024, random);
