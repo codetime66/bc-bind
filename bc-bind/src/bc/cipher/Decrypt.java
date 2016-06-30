@@ -39,7 +39,7 @@ public class Decrypt implements IDecrypt {
         
         Decrypt decrypt = new Decrypt();
         String privKeyFileName = args[0];
-        decrypt.perform(privKeyFileName, encryptedData, encryptedkey);
+        System.out.println(decrypt.perform(privKeyFileName, encryptedData, encryptedkey));
     }
 
     @Override
@@ -57,9 +57,9 @@ public class Decrypt implements IDecrypt {
         byte[] decryptedSymmetricKey = dipher.doFinal(base64Decode(encryptedkey));
 
         //Decrypt encrypted Data by decrypted symmetric key
-        System.out.println("Decrypted Data : " + decryptWithAESKey(encryptedData, decryptedSymmetricKey));
+        String decryptedData = decryptWithAESKey(encryptedData, decryptedSymmetricKey);
 
-        return null;
+        return decryptedData;
     }
 
     protected String readKeyFile(String fileName) throws Exception {
@@ -102,4 +102,5 @@ public class Decrypt implements IDecrypt {
         return new String(newData);
 
     }
+    
 }

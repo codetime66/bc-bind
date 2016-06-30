@@ -1,5 +1,5 @@
 /**
- * java -cp /home/codetime/projects/bc-bind/target/bc-1.0-SNAPSHOT.jar:/home/codetime/glassfish4/glassfish/modules/javax.json.jar bc.cipher.Encrypt derivative.txt PUBKEYCETIP
+ * java -cp /home/codetime/projects/bc-bind/target/bc-1.0-SNAPSHOT.jar:/home/codetime/glassfish4/glassfish/modules/javax.json.jar bc.cipher.Encrypt <MESSAGE> <PUBKEY>
  * 
  */
 package bc.cipher;
@@ -35,37 +35,34 @@ public class Encrypt implements IEncrypt {
         Encrypt encrypt = new Encrypt();
         String message = encrypt.readKeyFile(args[0]);
         String keyFileName = args[1];
-        encrypt.perform(message, keyFileName);
+        String[] result = encrypt.perform(message, keyFileName);
+        System.out.println("encryptedData=" + result[0] + ", encryptedkey="+result[1]);
     }
 
     @Override
-    public String perform(String s_message, String keyFileName) throws Exception {
+    public String[] perform(String s_message, String keyFileName) throws Exception {
         byte[] message = s_message.getBytes();
         //Generate Symmetric key
         KeyGenerator generator = KeyGenerator.getInstance("AES");
         generator.init(128);
         SecretKey key = generator.generateKey();
         byte[] symmetricKey = key.getEncoded();
-        System.out.println("key : " + symmetricKey);
 
         //Generate private key public key pair
         String pubK = readKeyFile(keyFileName);
         PublicKey publicKey = loadPublicKey(pubK.toString());
-        System.out.println(publicKey);
 
         //Encrypt Data by symmetric key
         //String encryptedData = encryptWithAESKey("My Secured Message", symmetricKey);
         String encryptedData = encryptWithAESKey(message, symmetricKey);
-        System.out.println("Encrypted Data : " + encryptedData);
 
         //Encrypt symmetric key by public key
         Cipher cipher = Cipher.getInstance("RSA");
         cipher.init(Cipher.ENCRYPT_MODE, publicKey);
 
         String encryptedkey = base64Encode(cipher.doFinal(symmetricKey));
-        System.out.println("Encrypted Key : " + encryptedkey);
         
-        return null;
+        return new String[]{encryptedData, encryptedkey};
     }
 
     protected String encryptWithAESKey(byte[] data, byte[] key) throws NoSuchAlgorithmException, NoSuchPaddingException,
@@ -106,4 +103,5 @@ public class Encrypt implements IEncrypt {
         in.close();
         return buf.toString();
     }
+
 }
