@@ -26,11 +26,12 @@ public class KeyPairGen implements IKeyPairGen {
 
     public static void main(String[] args) throws Exception {
        KeyPairGen keyPairGen = new KeyPairGen();
-       System.out.println( keyPairGen.perform(args[0]));
+       String[] result = keyPairGen.perform(args[0]);
+       System.out.println("publicKey=" + result[0] + ", privatekey="+result[1]);
     }
     
     @Override
-    public String perform(String fileName) throws Exception {
+    public String[] perform(String fileName) throws Exception {
         KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA");
         SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
         gen.initialize(1024, random);
@@ -44,7 +45,7 @@ public class KeyPairGen implements IKeyPairGen {
         String privKeyFileName="PRIVKEY"+new String(fileName.getBytes());        
         writeKeyFile(privKey, privKeyFileName);
 
-        return null;
+        return new String[]{pubKey, privKey};
     }
 
     protected String savePrivateKey(PrivateKey priv) throws GeneralSecurityException {

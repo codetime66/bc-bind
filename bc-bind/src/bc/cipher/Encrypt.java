@@ -53,9 +53,8 @@ public class Encrypt implements IEncrypt {
         PublicKey publicKey = loadPublicKey(pubK.toString());
 
         //Encrypt Data by symmetric key
-        //String encryptedData = encryptWithAESKey("My Secured Message", symmetricKey);
         String encryptedData = encryptWithAESKey(message, symmetricKey);
-
+        
         //Encrypt symmetric key by public key
         Cipher cipher = Cipher.getInstance("RSA");
         cipher.init(Cipher.ENCRYPT_MODE, publicKey);

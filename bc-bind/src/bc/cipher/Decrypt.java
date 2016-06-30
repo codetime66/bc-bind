@@ -1,5 +1,5 @@
 /**
- *  java -cp /home/codetime/projects/bc-bind/target/bc-1.0-SNAPSHOT.jar:/home/codetime/glassfish4/glassfish/modules/javax.json.jar bc.cipher.Decrypt <PRIVKEY> <encryptedData> <encryptedkey>
+ * java -cp /home/codetime/projects/bc-bind/target/bc-1.0-SNAPSHOT.jar:/home/codetime/glassfish4/glassfish/modules/javax.json.jar bc.cipher.Decrypt <PRIVKEY> <encryptedData> <encryptedkey>
  *
  */
 package bc.cipher;
@@ -33,10 +33,10 @@ import java.util.Base64;
 public class Decrypt implements IDecrypt {
 
     public static void main(String[] args) throws Exception {
-        
-        String encryptedData = "c2ApEqvITmTVeeDdxGmjXIuK7wDFpeibQhNVinnyPVJ1IfWhxu5YYvGsrGdyjn3kd3G21HOwce0ozSvkBfH3mqobinqJSIyz2SzSF5YBzbwS4rO8fy2KIYcxeXoGRXSObFcDhRtzhIuKjcZc5a96ZLMEH9W7FvBg0s6YAlGRlZPTXvIkunb+66cwzqYWelYdHmnr1urA+64uReesHqiJvrhZmzB6/B1kAbshQVYtj3M1jbPIojPmamMGvseFdnCP5e9eO32GOQ+yX9JBAxmGAA3KX7YGcCx/IAphf3FcM/4Z1fV3vq0Ij5+KEtNuPwb5WzvQwMty+nLc4o8eCi5GNAcwGEYY81I4tI4I6I1Tk7TeSgrKOaP2QrBlQ81eDXytnguUOZ1AxwSUbGUtaPjrCG2+m+j4NOaUJdA2lUIUhA7OADYaN0jCoQFneg9wEkKx";
-        String encryptedkey = "WXprFHCHCpqXJfCOr2aLsosqlhRjYClzNHmUdsrKgNPqNGitKF4JCvxfwyhRXRwupjAdwj+35EOy6BSu1yx1TW0DDfAxhjZF0e6cqMuFJ+ysV6DSFR6xDDLBi/ziHF/2spkRWDhQQdl6pawURfU7ZYnO0F8wAUDflBxpSdfP62o=";
-        
+
+        String encryptedData = "0Op0qzuNwX//m+lqWf7Cn3TX7dvs/20p0W5+seSHuIcU4bBT4gggNcb7UF+AkNYK8INrr6+kbHv2yBpx7H8WSthqYZC0ZWTNH1SE9lQQBsfBYadlGeIaDc7IijF3L9yq0Nt0/NFqvBchIePPRa1uT9J26vtznoWKw5cSlHss/yExJxdOs7GwADX7i6ZSKJvf+sT2TUUJJCdxpfjvv1N1djU2bey8D2AcnQOmOXQJJkchSVuEGtPjTAgCc7bk7l1jcCp1gn0oJhG3h6nMjhTS9/2T1AKJW60vOkxkhSK6Klr/1lFez1V4EYjen5YzI3PHVAg0E8L66ryWwYTFHayS+OOlBfBwzm7fI9wE9WkJmVWtTeb90Jg2cr1nSe/7/OmeNKcA5aj8wsWmjuPWBc8uzEvGS8kDBJSwc1fFHCuQOEVEUb4dt74RTzDejeU+54si";
+        String encryptedkey = "Z9JqXFk/A2kmVo9ZowqmOlHZ9yCbFOoq3vHq0qDbdM3V9K9vef4dIbc+Mr8Gb9ZLKCP5yfrUApBKi8tVJKnVyVxGB4KDaZX+mhftwg57tcVaR9MLuWKjQ62P25Pd/AE1KiQ0whP/uwk9LRAPgDpZ3xsUcxCT7Qsz/yC0U/8AS8k=";
+
         Decrypt decrypt = new Decrypt();
         String privKeyFileName = args[0];
         System.out.println(decrypt.perform(privKeyFileName, encryptedData, encryptedkey));
@@ -90,7 +90,7 @@ public class Decrypt implements IDecrypt {
     protected byte[] base64Encode(byte[] key64) {
         return Base64.getDecoder().decode(key64);
     }
-    
+
     protected String decryptWithAESKey(String inputData, byte[] key) throws NoSuchAlgorithmException,
             NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
         Cipher cipher = Cipher.getInstance("AES");
@@ -102,5 +102,5 @@ public class Decrypt implements IDecrypt {
         return new String(newData);
 
     }
-    
+
 }

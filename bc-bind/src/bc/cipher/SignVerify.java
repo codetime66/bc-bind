@@ -40,7 +40,7 @@ public class SignVerify implements ISignVerify {
     }
 
     @Override
-    public String perform(String sigFile, String original, String pubFileName) throws Exception {
+    public boolean perform(String sigFile, String original, String pubFileName) throws Exception {
         byte[] b_sigFile = base64Decode(sigFile);
         byte[] b_original = original.getBytes();
         String keyFileName = pubFileName;
@@ -56,7 +56,7 @@ public class SignVerify implements ISignVerify {
         boolean verifies = sig.verify(b_sigFile);
         System.out.println("signature verifies: " + verifies);
 
-        return "signature verifies: " + verifies;
+        return verifies;
     }
 
     protected PublicKey loadPublicKey(String stored) throws GeneralSecurityException {
