@@ -5,7 +5,11 @@
 package bc.cipher;
 
 import bc.cipher.api.IKeyPairGen;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.security.GeneralSecurityException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
@@ -25,11 +29,11 @@ import java.util.Base64;
 public class KeyPairGen implements IKeyPairGen {
 
     public static void main(String[] args) throws Exception {
-       KeyPairGen keyPairGen = new KeyPairGen();
-       String[] result = keyPairGen.perform(args[0]);
-       System.out.println("publicKey=" + result[0] + ", privatekey="+result[1]);
+        KeyPairGen keyPairGen = new KeyPairGen();
+        String[] result = keyPairGen.perform(args[0]);
+        System.out.println("publicKey=" + result[0] + ", privatekey=" + result[1]);
     }
-    
+
     @Override
     public String[] perform(String fileName) throws Exception {
         KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA");
@@ -38,17 +42,17 @@ public class KeyPairGen implements IKeyPairGen {
         KeyPair pair = gen.generateKeyPair();
 
         String pubKey = savePublicKey(pair.getPublic());
-        String pubKeyFileName="PUBKEY"+new String(fileName.getBytes());
+        String pubKeyFileName = "PUBKEY" + new String(fileName.getBytes());
         writeKeyFile(pubKey, pubKeyFileName);
 
         String privKey = savePrivateKey(pair.getPrivate());
-        String privKeyFileName="PRIVKEY"+new String(fileName.getBytes());        
+        String privKeyFileName = "PRIVKEY" + new String(fileName.getBytes());
         writeKeyFile(privKey, privKeyFileName);
 
         return new String[]{pubKey, privKey};
     }
 
-    protected String savePrivateKey(PrivateKey priv) throws GeneralSecurityException {
+    public String savePrivateKey(PrivateKey priv) throws GeneralSecurityException {
         KeyFactory fact = KeyFactory.getInstance("RSA");
         PKCS8EncodedKeySpec spec = fact.getKeySpec(priv,
                 PKCS8EncodedKeySpec.class);
@@ -59,20 +63,57 @@ public class KeyPairGen implements IKeyPairGen {
         return key64;
     }
 
-    protected String savePublicKey(PublicKey publ) throws GeneralSecurityException {
+    public String savePublicKey(PublicKey publ) throws GeneralSecurityException {
         KeyFactory fact = KeyFactory.getInstance("RSA");
         X509EncodedKeySpec spec = fact.getKeySpec(publ,
                 X509EncodedKeySpec.class);
         return base64Encode(spec.getEncoded());
     }
 
-    protected String base64Encode(byte[] packed) {
+    public PublicKey loadPublicKey(String stored) throws GeneralSecurityException {
+        byte[] data = base64Decode(stored);
+        X509EncodedKeySpec spec = new X509EncodedKeySpec(data);
+        KeyFactory fact = KeyFactory.getInstance("RSA");
+        return fact.generatePublic(spec);
+    }
+
+    public PrivateKey loadPrivateKey(String key64) throws GeneralSecurityException {
+        byte[] clear = base64Decode(key64);
+        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(clear);
+        KeyFactory fact = KeyFactory.getInstance("RSA");
+        PrivateKey priv = fact.generatePrivate(keySpec);
+        Arrays.fill(clear, (byte) 0);
+        return priv;
+    }
+
+    public byte[] base64Decode(String key64) {
+        return Base64.getDecoder().decode(key64);
+    }
+
+    public String base64Encode(byte[] packed) {
         return Base64.getEncoder().encodeToString(packed);
     }
 
-    protected void writeKeyFile(String key, String fileName) throws Exception {
+    public byte[] base64Decode(byte[] key64) {
+        return Base64.getDecoder().decode(key64);
+    }    
+    
+    public void writeKeyFile(String key, String fileName) throws Exception {
         FileOutputStream keyfos = new FileOutputStream(fileName);
         keyfos.write(key.getBytes());
         keyfos.close();
     }
+
+    public String readKeyFile(String fileName) throws Exception {
+        Reader in = new BufferedReader(
+                new InputStreamReader(new FileInputStream(fileName), "UTF8"));
+        StringBuffer buf = new StringBuffer();
+        int ch;
+        while ((ch = in.read()) > -1) {
+            buf.append((char) ch);
+        }
+        in.close();
+        return buf.toString();
+    }
+
 }

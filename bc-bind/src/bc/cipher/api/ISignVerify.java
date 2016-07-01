@@ -9,4 +9,5 @@ package bc.cipher.api;
  */
 public interface ISignVerify {
    public boolean perform(String sigFile, String original, String pubFileName) throws Exception;    
+   public IKeyPairGen getKeyPairGen();   
 }

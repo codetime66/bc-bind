@@ -4,18 +4,11 @@
  */
 package bc.cipher;
 
+import bc.cipher.api.CipherFactory;
+import bc.cipher.api.IKeyPairGen;
 import bc.cipher.api.ISignGen;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.security.GeneralSecurityException;
-import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.Signature;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.util.Arrays;
-import java.util.Base64;
 
 /**
  *
@@ -23,16 +16,16 @@ import java.util.Base64;
  */
 public class SignGen implements ISignGen {
 
-    public static void main(String[] args) throws Exception {
-        SignGen signGen = new SignGen();
-        System.out.println( signGen.perform(args[0],args[1]) );
+    private IKeyPairGen keyPairGen;
+    
+    public SignGen() throws Exception {
+        keyPairGen = (IKeyPairGen) CipherFactory.getInstance("KeyPairGen");
     }
     
     @Override
-    public String perform(String s_message, String keyFileName) throws Exception {
+    public String perform(String s_message, String privK) throws Exception {
         byte[] message = s_message.getBytes();
-        String privK = readKeyFile(keyFileName);
-        PrivateKey privSavedFile = loadPrivateKey(privK.toString());
+        PrivateKey privSavedFile = keyPairGen.loadPrivateKey(privK.toString());
         System.out.println(privSavedFile);
         //
         Signature rsa = Signature.getInstance("SHA1withRSA");
@@ -41,31 +34,18 @@ public class SignGen implements ISignGen {
         //
         byte[] realSig = rsa.sign();
 
-        return Base64.getEncoder().encodeToString(realSig);
+        return keyPairGen.base64Encode(realSig);
     }
 
-    protected String readKeyFile(String fileName) throws Exception {
-        Reader in = new BufferedReader(
-                new InputStreamReader(new FileInputStream(fileName), "UTF8"));
-        StringBuffer buf = new StringBuffer();
-        int ch;
-        while ((ch = in.read()) > -1) {
-            buf.append((char) ch);
-        }
-        in.close();
-        return buf.toString();
+    @Override
+    public IKeyPairGen getKeyPairGen(){
+        return keyPairGen;
     }
-
-    protected PrivateKey loadPrivateKey(String key64) throws GeneralSecurityException {
-        byte[] clear = base64Decode(key64);
-        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(clear);
-        KeyFactory fact = KeyFactory.getInstance("RSA");
-        PrivateKey priv = fact.generatePrivate(keySpec);
-        Arrays.fill(clear, (byte) 0);
-        return priv;
+    
+    public static void main(String[] args) throws Exception {
+        SignGen signGen = new SignGen();
+        String privK = signGen.getKeyPairGen().readKeyFile(args[1]);                
+        System.out.println( signGen.perform(args[0],privK) );
     }
-
-    protected byte[] base64Decode(String key64) {
-        return Base64.getDecoder().decode(key64);
-    }
+    
 }

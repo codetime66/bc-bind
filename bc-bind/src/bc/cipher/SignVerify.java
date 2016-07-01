@@ -5,18 +5,11 @@
 package bc.cipher;
 
 import bc.cipher.api.CipherFactory;
+import bc.cipher.api.IKeyPairGen;
 import bc.cipher.api.ISignGen;
 import bc.cipher.api.ISignVerify;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.security.GeneralSecurityException;
-import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.Signature;
-import java.security.spec.X509EncodedKeySpec;
-import java.util.Base64;
 
 /**
  *
@@ -24,61 +17,45 @@ import java.util.Base64;
  */
 public class SignVerify implements ISignVerify {
 
+    private IKeyPairGen keyPairGen;
+    
+    public SignVerify() throws Exception {
+        keyPairGen = (IKeyPairGen) CipherFactory.getInstance("KeyPairGen");
+    }
+    
+    @Override
+    public boolean perform(String sigFile, String original, String pubK) throws Exception {
+        byte[] b_sigFile = keyPairGen.base64Decode(sigFile);
+        byte[] b_original = original.getBytes();
+        PublicKey pubSavedFile = keyPairGen.loadPublicKey(pubK.toString());
+        //
+        Signature sig = Signature.getInstance("SHA1withRSA");
+        sig.initVerify(pubSavedFile);
+        sig.update(b_original);
+        //        
+        return sig.verify(b_sigFile);
+    }
+
+    @Override
+    public IKeyPairGen getKeyPairGen(){
+        return keyPairGen;
+    }
+    
     public static void main(String[] args) throws Exception {
 
         SignVerify signVerify = new SignVerify();
 
         String privFileName = "PRIVKEY" + new String(args[2]);
         String pubFileName = "PUBKEY" + new String(args[2]);
-        String original = signVerify.readKeyFile(args[1]);
+        String pubK = signVerify.getKeyPairGen().readKeyFile(pubFileName);        
+        String original = signVerify.getKeyPairGen().readKeyFile(args[1]);
         //
         ISignGen signGen = (ISignGen) CipherFactory.getInstance("SignGen");
-        String sigFile = signGen.perform(original, privFileName);
+        String privK = signGen.getKeyPairGen().readKeyFile(privFileName);        
+        String sigFile = signGen.perform(original, privK);
         System.out.println("signed file: " + sigFile);
         //
-        System.out.println(signVerify.perform(sigFile, original, pubFileName));
+        System.out.println(signVerify.perform(sigFile, original, pubK));
     }
-
-    @Override
-    public boolean perform(String sigFile, String original, String pubFileName) throws Exception {
-        byte[] b_sigFile = base64Decode(sigFile);
-        byte[] b_original = original.getBytes();
-        String keyFileName = pubFileName;
-        String pubK = readKeyFile(keyFileName);
-        PublicKey pubSavedFile = loadPublicKey(pubK.toString());
-        System.out.println(pubSavedFile);
-        //
-        Signature sig = Signature.getInstance("SHA1withRSA");
-        sig.initVerify(pubSavedFile);
-        System.out.println("file to verify:" + new String(b_original));
-        sig.update(b_original);
-        //        
-        boolean verifies = sig.verify(b_sigFile);
-        System.out.println("signature verifies: " + verifies);
-
-        return verifies;
-    }
-
-    protected PublicKey loadPublicKey(String stored) throws GeneralSecurityException {
-        byte[] data = base64Decode(stored);
-        X509EncodedKeySpec spec = new X509EncodedKeySpec(data);
-        KeyFactory fact = KeyFactory.getInstance("RSA");
-        return fact.generatePublic(spec);
-    }
-
-    protected byte[] base64Decode(String key64) {
-        return Base64.getDecoder().decode(key64);
-    }
-
-    protected String readKeyFile(String fileName) throws Exception {
-        Reader in = new BufferedReader(
-                new InputStreamReader(new FileInputStream(fileName), "UTF8"));
-        StringBuffer buf = new StringBuffer();
-        int ch;
-        while ((ch = in.read()) > -1) {
-            buf.append((char) ch);
-        }
-        in.close();
-        return buf.toString();
-    }
+    
 }
